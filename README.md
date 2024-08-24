@@ -1,4 +1,4 @@
-# ESPACE-PERFORMANCE
+# ESPACE
 
 # Django Full Stack E-Commerce Application
 
