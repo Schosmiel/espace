@@ -1,0 +1,29 @@
+<div class="col-lg-4 col-md-5">
+    <div class="blog__sidebar">
+        <div class="blog__sidebar__search">
+            <form action="#">
+                <input type="text" placeholder="Rechercher...">
+                <button type="submit"><span class="icon_search"></span></button>
+            </form>
+        </div>
+        <div class="blog__sidebar__item">
+            <h4>Categories</h4>
+            <ul>
+                {% for c in blog_categories %}
+                    <li>
+                        <a href="{% url 'blog:blog-category' c.cid %}">{{ c.title }} ({{ c.categories.count }})</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Code pour les "Recent News" commenté -->
+        <div class="blog__sidebar__item">
+            <h4>Par balises</h4>
+            <div class="blog__sidebar__item__tags">
+                {% for random_tag in random_blog_tags %}
+                    <a href="{% url 'blog:blog-tag' random_tag.slug %}">#{{ random_tag.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

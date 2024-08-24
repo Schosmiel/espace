@@ -1,0 +1,40 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %} Connexion {% endblock title %}
+
+{% block content %}
+
+<div class="auth_wrapper">
+    <header class="auth_header">Se connecter</header>
+    <form method="POST" class="auth_form">
+      {% csrf_token %}
+      <div class="field email">
+        <div class="input-area">
+          <input type="text" required name="email" placeholder="Addresse Email">
+          <i class="icon fas fa-envelope"></i>
+          {% if messages %}
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+          {% endif %}
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="error error-txt">
+              <strong>{{ message }}</strong>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="field password">
+        <div class="input-area">
+          <input type="password" required name="password" placeholder="mot de passe">
+          <i class="icon fas fa-lock"></i>
+        </div>
+      </div>
+      <div class="pass-txt"><a href="#">Mot de passe oublié?</a></div>
+      <input type="submit" value="Sing in">
+    </form>
+  <div class="sign-txt">Pas encore membre ? <a href="{% url 'userauths:sing-up' %}">S'inscrire maintenant </a></div>
+</div>
+
+{% endblock content %}

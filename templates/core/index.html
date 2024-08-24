@@ -1,0 +1,387 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Espace | Acceuil{% endblock title %}
+
+{% block content %}
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Toutes Categories</span>                        
+                    </div>
+                    <ul>
+                        {% for c in categories %}
+                        <li><a href="{% url 'core:category-product-list' c.cid %}">
+                        {{ c.title }}
+                        </a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="{% url 'core:search' %}" method="GET">
+                            <input type="text" placeholder="De quoi avez-vous besoin?" name="q">
+                            <button type="submit" class="site-btn">Recherche</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>99059314</h5>
+                            <span>Support 24h/7</span>
+                        </div>
+                    </div>
+                </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{message.tags}} alert-dismissible" role="alert">
+                            <div id="form_errors">
+                                    <strong>{{ message }}</strong>   
+                            </div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="hero__item set-bg" data-setbg="{% static './assets/img/hero/bann.png' %}">
+                    <div class="hero__text">
+                        <span>ESPACE PERFORMANCE</span>
+                        <h2>Fondations et<br />structures solides</h2>
+                        <p>Payement à la livraison & livraison gratuites</p>
+                        <a href="{% url 'core:products-list' %}" class="primary-btn">COMMANDEZ MAINTENENT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Categories Section Begin -->
+<section class="categories">
+    <div class="container">
+        <div class="row">
+            <div class="categories__slider owl-carousel">
+                {% for c in categories %}
+                <div class="col-lg-3">
+                    <div class="categories__item set-bg" data-setbg="{{ c.image.url }}">
+                        <h5><a href="{% url 'core:category-product-list' c.cid %}">{{ c.title }}</a></h5>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Categories Section End -->
+
+<!-- Featured Section Begin -->
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Produit en vedette</h2>
+                </div>
+                <div class="featured__controls">
+                    <ul>
+                        <li class="active" data-filter="*">Toutes</li>
+                        <li data-filter=".Fruits">Perceuse électrique</li>
+                        <li data-filter=".Vegetables">Niveau à bulle</li>
+                        <li data-filter=".Nuts">Scie circulaire</li>
+                        <li data-filter=".Fastfood">Marteau</li>
+                        <li data-filter=".Fastfood">Perceuse à percussion</li>
+                        <li data-filter=".Fastfood">Mètre ruban</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row featured__filter">
+            {% for p in products %}
+            {% if forloop.counter <= 8 %}  <!-- Afficher seulement 8 produits (2 lignes de 4 colonnes) -->
+                {% if p.get_percentage > 0 %}
+                <div class="col-lg-3 col-md-3 col-sm-6 mix {{ p.category.title }}">
+                    <div class="main__product__item">
+                        <a href="{% url 'core:products-detail' p.pid %}">
+                            <div class="main__product__item__pic set-bg" data-setbg="{{ p.image.url }}">
+                                <div class="main__product__percent">-{{ p.get_percentage|floatformat:0 }}%</div>
+                            </div>
+                        </a>
+                        <div class="main__product__item__text">
+                            <span>{{ p.category.title }}</span>
+                            <h5><a href="{% url 'core:products-detail' p.pid %}">{{ p.title }}</a></h5>
+                            <span style="display: none" class="current-product-price-{{ p.id }}">{{ p.price }}</span>
+                            <div class="product__item__price">${{ p.price }} <span>${{ p.old_price }}</span></div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-lg-3 col-md-3 col-sm-6 mix {{ p.category.title }}">
+                    <div class="main__product__item">
+                        <a href="{% url 'core:products-detail' p.pid %}">
+                            <div class="main__product__item__pic set-bg" data-setbg="{{ p.image.url }}">
+                            </div>
+                        </a>
+                        <div class="main__product__item__text">
+                            <span>{{ p.category.title }}</span>
+                            <h5><a href="{% url 'core:products-detail' p.pid %}">{{ p.title }}</a></h5>
+                            <span style="display: none" class="current-product-price-{{ p.id }}">{{ p.price }}</span>
+                            <div class="product__item__price">${{ p.price }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        
+
+
+    </div>
+</section>
+<!-- Featured Section End -->
+
+<!-- Banner Begin -->
+<div class="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="banner__pic">
+                    <img src="{% static './assets/img/banners/5.png' %}" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="banner__pic">
+                    <img src="{% static './assets/img/banners/banner-1.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner End -->
+
+<!-- Latest Product Section Begin -->
+<section class="latest-product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Derniers Produit</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in latest_products|slice:":3" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    {% if p.get_percentage > 0 %}
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                    {% else %}
+                                    <span>${{p.price}}</span>
+                                    {% endif %}      
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in latest_products|slice:"3:6" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    {% if p.get_percentage > 0 %}
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                    {% else %}
+                                    <span>${{p.price}}</span>
+                                    {% endif %}      
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in latest_products|slice:"6:9" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    {% if p.get_percentage > 0 %}
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                    {% else %}
+                                    <span>${{p.price}}</span>
+                                    {% endif %}      
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Tu pourrais aimer</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in oldest_products|slice:":3" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    {% if p.get_percentage > 0 %}
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                    {% else %}
+                                    <span>${{p.price}}</span>
+                                    {% endif %}      
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in oldest_products|slice:"3:6" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    {% if p.get_percentage > 0 %}
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                    {% else %}
+                                    <span>${{p.price}}</span>
+                                    {% endif %}      
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in oldest_products|slice:"6:9" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    {% if p.get_percentage > 0 %}
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                    {% else %}
+                                    <span>${{p.price}}</span>
+                                    {% endif %}      
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="latest-product__text">
+                    <h4>Offre Special</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in special_offers|slice:":3" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in special_offers|slice:"3:6" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            {% for p in special_offers|slice:"6:9" %}
+                            <a href="{% url 'core:products-detail' p.pid %}" class="latest-product__item">
+                                <div class="latest-product__item__pic">
+                                    <img src="{{p.image.url}}" alt="">
+                                </div>
+                                <div class="latest-product__item__text">
+                                    <h6>{{p.title}}</h6>
+                                    <span>${{p.price}}</span>
+                                    <span class="item__old__price">${{p.old_price}}</span>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Latest Product Section End -->
+
+<!-- Blog Section Begin -->
+<section class="from-blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title from-blog__title">
+                    <h2>Du Blog</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for p in blog_posts %}
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item">
+                    <div class="blog__item__pic">
+                        <a href="{% url 'blog:blog-detail' p.pid %}"><img src="{{ p.image.url }}" alt=""></a>
+                    </div>
+                    <div class="blog__item__text">
+                        <ul>
+                            <li><i class="fa fa-calendar-o"></i> {{ p.date_created|date:"d M, Y" }}</li>
+                            <li><i class="fa fa-comment-o"></i> {{ p.comments.count }}</li>
+                        </ul>
+                        <h5><a href="{% url 'blog:blog-detail' p.pid %}">{{ p.title }}</a></h5>
+                        <p>{{ p.subtitle|truncatechars:150 }} </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+     
+        </div>
+    </div>
+</section>
+{% endblock content %}
