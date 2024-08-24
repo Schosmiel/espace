@@ -91,10 +91,3 @@ python manage.py createsuperuser
 ```
 python manage.py
 ```
-
-
-schosmiel@gmail.com
-Rich99059314@
-
-richard@gmail.com
-Richard@
